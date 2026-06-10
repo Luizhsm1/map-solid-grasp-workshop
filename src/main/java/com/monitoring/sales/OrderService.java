@@ -1,7 +1,5 @@
 package com.monitoring.sales;
 
-import java.util.List;
-
 public class OrderService {
 
     private final DiscountService discountService = new DiscountService();
