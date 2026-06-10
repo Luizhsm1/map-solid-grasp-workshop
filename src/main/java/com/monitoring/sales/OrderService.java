@@ -4,6 +4,11 @@ import java.util.List;
 
 public class OrderService {
 
+    private final DiscountService discountService = new DiscountService();
+    private final PaymentService paymentService = new PaymentService();
+    private final OrderRepository repository = new OrderRepository();
+    private final EmailService emailService = new EmailService();
+
     public void processOrder(Order order, String paymentType) {
 
         double total = 0;
@@ -12,13 +17,7 @@ public class OrderService {
             total += item.getPrice() * item.getQuantity();
         }
 
-        if (total > 1000) {
-            total = total - (total * 0.05);
-        }
-
-        if (total > 500) {
-            total = total - (total * 0.15);
-        }
+        total = discountService.applyDiscount(total);
 
         System.out.println("Customer: " + order.getCustomerName());
 
@@ -35,43 +34,12 @@ public class OrderService {
 
         System.out.println("Total: " + total);
 
-        if (paymentType.equals("PIX")) {
+        paymentService.processPayment(paymentType);
 
-            System.out.println("Processing PIX payment");
+        repository.saveOrder(order);
 
-        } else if (paymentType.equals("CARD")) {
-
-            System.out.println("Processing CARD payment");
-
-        } else if (paymentType.equals("CASH")) {
-
-            System.out.println("Processing CASH payment");
-
-        } else {
-
-            throw new RuntimeException("Invalid payment method");
-
-        }
-
-        saveOrder(order);
-
-        sendEmail(order);
+        emailService.sendEmail(order);
 
     }
 
-    private void saveOrder(Order order) {
-
-        System.out.println("Connecting to MySQL...");
-
-        System.out.println("Saving order...");
-
-    }
-
-    private void sendEmail(Order order) {
-
-        System.out.println(
-                "Sending confirmation email to "
-                        + order.getCustomerName());
-
-    }
 }
