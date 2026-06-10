@@ -27,7 +27,19 @@ public class OrderService {
 
         System.out.println("Total: " + total);
 
-        paymentService.processPayment(paymentType);
+        PaymentMethod paymentMethod;
+
+        if (paymentType.equals("PIX")) {
+            paymentMethod = new PixPayment();
+        } else if (paymentType.equals("CARD")) {
+            paymentMethod = new CardPayment();
+        } else if (paymentType.equals("CASH")) {
+            paymentMethod = new CashPayment();
+        } else {
+            throw new RuntimeException("Invalid payment method");
+        }
+
+        paymentService.processPayment(paymentMethod);
 
         repository.saveOrder(order);
 
