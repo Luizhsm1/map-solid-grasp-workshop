@@ -6,6 +6,13 @@ public class Application {
 
     public static void main(String[] args) {
 
+        OrderService orderService = new OrderService(
+                new DiscountService(),
+                new PaymentService(),
+                new MySqlOrderRepository(),
+                new EmailService()
+        );
+
         OrderItem notebook = new OrderItem(
                 "Notebook",
                 3500,
@@ -20,8 +27,6 @@ public class Application {
                 "John Doe",
                 List.of(notebook, mouse));
 
-        OrderService orderService = new OrderService();
-
-        orderService.processOrder(order, "PIX");
+        orderService.processOrder(order, new PixPayment());
     }
 }
