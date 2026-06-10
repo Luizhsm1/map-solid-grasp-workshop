@@ -12,6 +12,16 @@ public class Order {
         this.items = items;
     }
 
+    public double calculateTotal() {
+        double total = 0;
+
+        for (OrderItem item : items) {
+            total += item.getPrice() * item.getQuantity();
+        }
+        
+        return total;
+    }
+
     public String getCustomerName() {
         return customerName;
     }

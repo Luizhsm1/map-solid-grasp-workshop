@@ -10,12 +10,7 @@ public class OrderService {
     private final EmailService emailService = new EmailService();
 
     public void processOrder(Order order, String paymentType) {
-
-        double total = 0;
-
-        for (OrderItem item : order.getItems()) {
-            total += item.getPrice() * item.getQuantity();
-        }
+        double total = order.calculateTotal();
 
         total = discountService.applyDiscount(total);
 
