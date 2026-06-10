@@ -12,6 +12,10 @@ public class OrderService {
             total += item.getPrice() * item.getQuantity();
         }
 
+        if (total > 1000) {
+            total = total - (total * 0.05);
+        }
+
         if (total > 500) {
             total = total - (total * 0.15);
         }
@@ -38,6 +42,10 @@ public class OrderService {
         } else if (paymentType.equals("CARD")) {
 
             System.out.println("Processing CARD payment");
+
+        } else if (paymentType.equals("CASH")) {
+
+            System.out.println("Processing CASH payment");
 
         } else {
 
